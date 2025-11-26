@@ -1,1 +1,8 @@
 .DS_Store
+.idea
+.code-workspace
+.vscode
+.venv
+
+*.pyc
+__pycache__/
