@@ -15,7 +15,7 @@ HF_TOKEN = os.getenv("HF_TOKEN")  # For HuggingFace
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")  # For OpenRouter
 
 # Paths
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).parent.parent
 DATASET_PATH = PROJECT_ROOT / "out" / "dataset.json"
 LOG_DIR = PROJECT_ROOT / "logs"
 
