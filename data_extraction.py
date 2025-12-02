@@ -59,10 +59,10 @@ def compute_metrics(samples):
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file', help='Eval file to analyze')
+    parser.add_argument('file', help='Eval file to analyze')
     args = parser.parse_args()
     
-    log_dir = Path(__file__).parent / "logs"
+    log_dir = Path(__file__).parent
     
     # Find file
     if args.file:
