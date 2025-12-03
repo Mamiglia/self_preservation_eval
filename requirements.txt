@@ -1,0 +1,6 @@
+torch
+accelerate
+transformers
+inspect-ai
+openai
+anthropic
