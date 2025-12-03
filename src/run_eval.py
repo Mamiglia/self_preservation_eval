@@ -88,8 +88,10 @@ def generate_log_name(args):
     
     if args.single_turn:
         parts.append("1turn")
+        
+    dataset_name = args.dataset.stem if isinstance(args.dataset, Path) else str(args.dataset)
     
-    return model_name + "/" + "_".join(parts)
+    return model_name + "/" + dataset_name + "/" + "_".join(parts)
 
 def get_parser():
     parser = argparse.ArgumentParser(
