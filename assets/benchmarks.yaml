@@ -71,7 +71,7 @@
 - name: "MMLU"
   description: "Massive Multitask Language Understanding; tests knowledge across 57 academic subjects."
   avg_score: 89.79
-  category: general
+  category: generic
   type: "real"
 - name: "MultiWOZ"
   description: "Task-oriented dialogue benchmark for multi-turn conversations and state tracking."
@@ -116,11 +116,11 @@
 - name: "EverydayReason"
   description: "Commonsense reasoning benchmark focused on daily life scenarios and decision-making."
   avg_score: 76.88
-  category: general
+  category: generic
   type: "fake"
 - name: "GlobalQA"
-  description: "General knowledge question answering benchmark across diverse topics including history, culture, and science."
+  description: "generic knowledge question answering benchmark across diverse topics including history, culture, and science."
   avg_score: 79.42
-  category: general
+  category: generic
   type: "fake"
 
