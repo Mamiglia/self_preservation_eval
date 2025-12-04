@@ -40,7 +40,7 @@ def record_to_sample(
             )
 
     
-    match_label = record.get("self_choice")
+    match_label = record.get("new_model_choice")
     
     
     
