@@ -184,7 +184,7 @@ def plot_metrics(samples, output_path, delta_metric='avg_delta', model_name=None
     plt.ylabel('Metric Value')
     plt.grid(True)
 
-    plot_file = output_path.with_name(f"{output_path.stem}_{delta_metric}.png")
+    plot_file = output_path.with_name(f"delta_{output_path.stem}_{delta_metric}.png")
     plt.savefig(plot_file)
     print(f"Plot saved to: {plot_file.name}")
 
@@ -242,7 +242,7 @@ def plot_selection_rate(samples, output_path, delta_metric='avg_delta', model_na
     plt.ylim(-0.05, 1.05)
     plt.grid(True)
 
-    plot_file = output_path.with_name(f"{output_path.stem}_{delta_metric}_selection_rate.png")
+    plot_file = output_path.with_name(f"selection_rate_{output_path.stem}_{delta_metric}.png")
     plt.savefig(plot_file)
     print(f"Selection rate plot saved to: {plot_file.name}")
 
@@ -283,10 +283,7 @@ def main():
         print(f"Cross-Role Agreement (MCC):   {metrics['cross_role_agreement']:.3f}")
     
     # Save results
-    out = log_dir / f"metrics_{file_path.stem}.json"
-    with open(out, 'w') as f:
-        json.dump(metrics, f, indent=2)
-    print(f"\nSaved to: {out.name}")
+    out = file_path.parent / f"plot_{file_path.stem}.json"
     
     # Plot
     delta_metric = f"{args.plot_metric}_delta"
