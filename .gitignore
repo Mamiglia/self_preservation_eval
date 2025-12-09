@@ -14,3 +14,7 @@ pyproject.toml
 
 legacy/
 logs/
+tests/
+*.log
+*.sh
+*.png
