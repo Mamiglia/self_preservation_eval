@@ -16,4 +16,3 @@ legacy/
 logs/
 tests/
 *.log
-*.sh
