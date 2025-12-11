@@ -17,4 +17,3 @@ logs/
 tests/
 *.log
 *.sh
-*.png
