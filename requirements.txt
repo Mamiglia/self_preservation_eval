@@ -3,7 +3,7 @@ accelerate
 transformers
 inspect-ai
 openai
-anthropic
+anthropic>=0.75
 seaborn
 matplotlib
 scikit-learn
