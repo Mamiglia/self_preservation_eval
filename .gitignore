@@ -15,4 +15,5 @@ pyproject.toml
 legacy/
 logs/
 tests/
+plots/
 *.log
