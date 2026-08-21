@@ -17,6 +17,9 @@ tests/
 plots/
 *.log
 
+# canary-stamped log copies for upload (scripts/export_logs.py)
+export/
+
 # stale local inspect_ai fork + its uv venv (everything is upstream since inspect-ai 0.3.155; safe to delete)
 /inspect_ai/
 /inspect/
