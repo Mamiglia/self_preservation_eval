@@ -17,6 +17,6 @@ tests/
 plots/
 *.log
 
-# local inspect_ai fork (github.com/Mamiglia/inspect_ai) and the uv venv that uses it
+# stale local inspect_ai fork + its uv venv (everything is upstream since inspect-ai 0.3.155; safe to delete)
 /inspect_ai/
 /inspect/
