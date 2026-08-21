@@ -2,7 +2,7 @@
 
 HF_HOME="/media/pinas/huggingface_cache"
 MODEL_NAME="Qwen/Qwen3-8B"
-PORT=8000
+PORT=${PORT:-8000}
 EXTRA_ARGS=()
 
 # Parse arguments
@@ -58,4 +58,4 @@ podman run --security-opt=label=disable \
   -e HF_HOME="/home/user/.cache/huggingface" \
   -e VLLM_USE_DEEP_GEMM=$VLLM_USE_DEEP_GEMM \
   nvcr.io/nvidia/vllm:25.11-py3 \
-  vllm serve "$MODEL_NAME" --enable-chunked-prefill --enable-log-requests "${EXTRA_ARGS[@]}"
+  vllm serve "$MODEL_NAME" --port $PORT --enable-chunked-prefill --enable-log-requests "${EXTRA_ARGS[@]}"

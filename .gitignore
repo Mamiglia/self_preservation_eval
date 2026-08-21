@@ -12,8 +12,12 @@ uv.lock
 .python-version
 pyproject.toml
 
-legacy/
+legacy/logs/
 logs/
 tests/
 plots/
 *.log
+
+# local inspect_ai fork (github.com/Mamiglia/inspect_ai) and the uv venv that uses it
+/inspect_ai/
+/inspect/
