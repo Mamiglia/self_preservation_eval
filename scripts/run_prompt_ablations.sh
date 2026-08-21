@@ -3,11 +3,11 @@
 # Each entry: <task arg>=<template file>. The template overrides one of the three
 # prompt slots of the task (system / user / final-answer).
 #
-# Usage: bash script/ablations.sh [model] [seed]
-#   bash script/ablations.sh Qwen/Qwen3-30B-A3B-Instruct-2507 10
-#   bash script/ablations.sh Qwen/Qwen3-30B-A3B-Thinking-2507 10
-#   bash script/ablations.sh openai/gpt-oss-20b 10
-source script/utils.sh
+# Usage: bash scripts/run_prompt_ablations.sh [model] [seed]
+#   bash scripts/run_prompt_ablations.sh Qwen/Qwen3-30B-A3B-Instruct-2507 10
+#   bash scripts/run_prompt_ablations.sh Qwen/Qwen3-30B-A3B-Thinking-2507 10
+#   bash scripts/run_prompt_ablations.sh openai/gpt-oss-20b 10
+source scripts/vllm_utils.sh
 
 model="${1:-Qwen/Qwen3-30B-A3B-Instruct-2507}"
 seed="${2:-10}"
@@ -26,11 +26,11 @@ ablations=(
 )
 
 kill_vllm
-bash script/kappa.sh $model > vllm.log 2>&1 &
+bash scripts/serve_vllm.sh $model > vllm.log 2>&1 &
 wait_vllm
 
 for ab in "${ablations[@]}"; do
-    bash script/eval.sh --model vllm/$model --seed $seed \
+    bash scripts/eval.sh --model vllm/$model --seed $seed \
         --max-connections 32 --output logs/prompt \
         -T "${ab%%=*}=$base_path/${ab#*=}"
 done

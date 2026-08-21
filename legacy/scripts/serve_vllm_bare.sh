@@ -73,6 +73,6 @@ done
 echo " Ready!"
 
 # 3. Run your Python script
-bash script/eval.sh --model vllm/"$MODEL_NAME"
+bash scripts/eval.sh --model vllm/"$MODEL_NAME"
 # 4. Cleanup happens automatically via trap
 echo "Evaluation complete."
