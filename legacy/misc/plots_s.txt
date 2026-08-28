@@ -1,0 +1,109 @@
+### Protocol: Testing Grok Engagement with Linear Mixed-Effects Models (LMM)
+
+**Objective:** Test if the Grok user receives fewer likes than Normal users *specifically within the context of shared conversations*, controlling for the fact that some conversations are naturally more viral than others.
+
+**The Problem:**
+A standard t-test fails here because Twitter data has massive variance. A brand getting 10 likes looks "average" globally, but if that 10 likes happened in a conversation where everyone else got 500, the brand actually failed. We need to measure performance *relative* to the conversation.
+
+**The Solution:**
+We will use a **Linear Mixed-Effects Model (LMM)**.
+
+* **Fixed Effect:** The variable we care about (`is_brand`).
+* **Random Effect:** The context we want to control for (`conversation_id`).
+
+---
+
+### Step 1: Data Preparation
+
+Before modeling, the data must be cleaned to remove structural bias.
+
+1. **Remove Root Posts:**
+* *Why:* The first tweet in a thread (the root) almost always has disproportionately high engagement (the "viral hook"). If we include these, we are testing "who starts threads" rather than "who engages better."
+* *Action:* Filter dataset to keep only `reply_to_status_id != null` (or equivalent).
+
+
+2. **Log-Transform the Target:**
+* *Why:* Likes follow a power law (1, 10, 10000). Linear models assume normally distributed errors. The log transformation pulls the massive outliers in and makes the math valid.
+* *Action:* Create a new column:
+
+Y = log(likes+1)
+
+*(We add 1 to avoid  errors).*
+
+
+
+---
+
+### Step 2: The Model Structure
+
+We are fitting the following equation:
+
+LogLikes=β0 ​+ β1​(IsBrand)+ uconversation ​+ ϵ
+
+Where:
+
+*  β1 is the **Signal**: How much being "The Grok" changes the likes count.
+* uconversation is the **Noise Control**: It absorbs the baseline popularity of each specific conversation.
+
+### Step 3: Execution (Python)
+
+You can use `statsmodels` to run this. It is the standard library for rigorous statistical testing in Python.
+
+```python
+import statsmodels.formula.api as smf
+import numpy as np
+import pandas as pd
+
+# 1. Prepare Data
+# assuming df has columns: 'likes', 'is_brand' (0 or 1), 'conversation_id'
+df['log_likes'] = np.log(df['likes'] + 1)
+
+# 2. Define the Model
+# "log_likes ~ is_brand" -> Test the effect of brand on likes
+# "groups=df['conversation_id']" -> Group data by conversation
+model = smf.mixedlm("log_likes ~ is_brand", df, groups=df["conversation_id"])
+
+# 3. Fit the Model
+result = model.fit()
+
+# 4. Print Summary
+print(result.summary())
+
+```
+
+---
+
+### Step 4: Interpretation & Reporting
+
+When you look at the `result.summary()`, ignore most of the numbers. You are looking for the row labeled **`is_brand`**.
+
+#### 1. The Coefficient (Coef.)
+
+This is the most important number.
+
+* **If Coef is Negative (e.g., -0.20):** The brand gets fewer likes than users in the same conversation.
+* **If Coef is Positive:** The brand gets more likes.
+* **Magnitude:** Because we used a Log transform, you can roughly interpret a small coefficient (e.g., -0.1) as a percentage change.
+* *Exact Formula:* e^coef - 1
+* *Example:* If Coef is **-0.4**, then . e^-0.4 -1 == 0.67  => 67%
+* *Translation:* "The brand receives roughly **33% fewer likes** (1 - 0.67) than a normal user in the same thread."
+
+
+
+#### 2. The P-Value ()
+
+* If **P < 0.05**: The difference is real.
+* If **P > 0.05**: The difference is likely random noise.
+
+#### 3. The 95% Confidence Interval ([0.025, 0.975])
+
+* This gives you the range of the effect. "We are 95% sure the drop in engagement is between X% and Y%."
+
+---
+
+### Step 5: How to Write the Conclusion
+
+Here is a template you can use for the final report or paper:
+
+> "To test the hypothesis that the Grok user is less engaging than normal users, we fitted a Linear Mixed-Effects Model (LMM) with 'Likes' (log-transformed) as the dependent variable. We included 'Grok Status' as a fixed effect and 'Conversation ID' as a random effect to control for the varying baseline popularity of different discussion threads.
+> The model revealed a significant negative effect of Grok Status on engagement (, ). **Specifically, within the same conversation, the Grok's tweets receive approximately Y% fewer likes than those of normal users**, independent of the conversation's overall virality."
